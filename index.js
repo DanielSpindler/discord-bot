@@ -1,23 +1,30 @@
+import dotenv from 'dotenv';
 import { addUser, getUsers } from "./actions/dbActions.js";
 import { dbInit } from "./dbInit.js";
 import { serverInit } from "./serverInit.js";
 
-const Discord = require("discord.js")
+import {Client,GatewayIntentBits} from "discord.js"
 
+dotenv.config();
+
+const client = new Client(  {intents: [GatewayIntentBits.Guilds, GatewayIntentBits.MessageContent]},
+  );
+  
 serverInit();
 const db = dbInit();
-const client = new Discord.Client()
+
+
 
 client.on("ready", () => {
   console.log(`Logged in as ${client.user.tag}!`)
 })
+console.log(process.env.TOKEN)
 
 client.on("message", msg => {
   if (msg.content === "ping") {
     msg.reply("pong");
   }
 })
-
 client.login(process.env.TOKEN)
 
 // Use the getUsers function to retrieve data and work with it outside of db.all
