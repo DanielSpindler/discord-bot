@@ -3,13 +3,18 @@ import { addUser, getUsers } from "./actions/dbActions.js";
 import { dbInit } from "./dbInit.js";
 import { serverInit } from "./serverInit.js";
 
-import {Client,GatewayIntentBits} from "discord.js"
+import {Client, GatewayIntentBits} from "discord.js"
 
 dotenv.config();
 
-const client = new Client(  {intents: [GatewayIntentBits.Guilds, GatewayIntentBits.MessageContent]},
-  );
-  
+const client = new Client({
+  intents: [
+      GatewayIntentBits.Guilds,
+      GatewayIntentBits.GuildMessages,
+      GatewayIntentBits.MessageContent
+]
+});
+
 serverInit();
 const db = dbInit();
 
@@ -20,7 +25,8 @@ client.on("ready", () => {
 })
 console.log(process.env.TOKEN)
 
-client.on("message", msg => {
+client.on("messageCreate", msg => {
+  console.log(msg);
   if (msg.content === "ping") {
     msg.reply("pong");
   }
