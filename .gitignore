@@ -18,4 +18,4 @@ Thumbs.db
 # Custom files
 .env
 
-mydatabase.db
+*.db
