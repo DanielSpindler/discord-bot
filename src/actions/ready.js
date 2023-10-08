@@ -11,11 +11,11 @@ export const readyHandler = (db, client) => {
         appointmentDelete(db, appointment);
       }
       if (timeDiff > 82800000 && timeDiff < 86400000) {
-        client.channels.cache.find(channel => channel.name === process.env.channelName).send(process.env.messageToUsers+ (timeDiff/ 1000 / 60) / 60 + "Hours")
+        client.channels.cache.find(channel => channel.name === process.env.channelName).send(process.env.messageToUsers+ appointment.appointment+', '+ appointment.date)
       }
       if (timeDiff < 3600000 && timeDiff > 0) {
-        client.channels.cache.find(channel => channel.name === process.env.channelName).send(process.env.messageToUsers+ (timeDiff/ 1000 / 60 / 60) + "Hours")
+        client.channels.cache.find(channel => channel.name === process.env.channelName).send(process.env.messageToUsers+ appointment.appointment+', '+ appointment.date)
       }
     });
-  }, 3660);
+  }, 3660000); //checking once per 61min
 };
