@@ -11,9 +11,13 @@ export const readyHandler = (db, client) => {
   const shortTimer = parseInt(process.env.shortTimer) * 1000 * 60;
 
   setInterval(async () => {
-    console.log(appointmentData);
-
     const data = await appointmentsGet(db, client);
+
+    for (const key in appointmentData) {
+      if (isCurrentDateTimeClose(key) < 0) {
+        delete appointmentData[key];
+      }
+    }
 
     for (const appointment of data) {
       const timeDiff = isCurrentDateTimeClose(appointment.date);
@@ -30,8 +34,6 @@ export const readyHandler = (db, client) => {
         notifiedType !== "long";
       const shouldNotifyShort =
         timeDiff < shortTimer && timeDiff > 0 && notifiedType !== "short";
-      console.log("timediff:" + timeDiff);
-      console.log(shortTimer);
       if (shouldNotifyLong || shouldNotifyShort) {
         console.log(shouldNotifyLong ? "long timer" : "short timer");
         client.channels.cache
