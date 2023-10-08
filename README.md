@@ -20,6 +20,8 @@
 This is a simple Discord-bot to create appointments and get notifications from the Bot if the appointment is in a specified time ("rn it is locked to 1day before the appointment and 1hour before").
 You can also delete the appointments. 
 
+The bot includes a Sqlite3 filebased Database to store Appointments. The Appointments will be deleted automatical after they expired.
+
 
 
 
