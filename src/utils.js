@@ -1,21 +1,23 @@
-import { time } from "discord.js";
-
 export const isCurrentDateTimeClose = (givenDateString) => {  
-  const berlinTimezone = "Europe/Berlin";
-  const currentDate = new Date().toLocaleString("en-DE", { timeZone: berlinTimezone });
+  // Create a Date object for the current date in Berlin's timezone
+  const currentDate = new Date();
+  currentDate.toLocaleString("en-DE", { timeZone: "Europe/Berlin" });
     
-  // Convert the given date string to a Date object in Berlin's timezone
+  // Split the given date string into its components
   const givenDateParts = givenDateString.split(/[\s/,:]+/);
+  
+  // Create a Date object for the given date in Berlin's timezone
   const givenDate = new Date(
     parseInt(givenDateParts[2]),
     parseInt(givenDateParts[1]) - 1, // Month is 0-based in JavaScript
     parseInt(givenDateParts[0]),
     parseInt(givenDateParts[3]),
     parseInt(givenDateParts[4])
-  ).toLocaleString("en-DE", { timeZone: berlinTimezone });
+  );
+  givenDate.toLocaleString("en-DE", { timeZone: "Europe/Berlin" });
 
+  // Calculate the time difference in milliseconds
+  const timeDifferenceMs = givenDate - currentDate;
 
-  const timeDifferenceMs = new Date(givenDate) - new Date(currentDate);
-
-return timeDifferenceMs;
+  return timeDifferenceMs;
 };

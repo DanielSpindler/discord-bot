@@ -22,10 +22,10 @@ export const appointmentDelete = (db, data) => {
 
   const query = `
   DELETE FROM ${process.env.tableName}
-  WHERE termin = ? AND date = ?
+  WHERE appointment = ? AND date = ?
 `;
   try {
-    db.run(query, [appointment.appointment, appointment.date], (err) => {
+    db.all(query, [appointment.appointment, appointment.date], (err) => {
       if (err) {
         console.error("Error deleting record:", err.message);
       } else {
