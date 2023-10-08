@@ -39,7 +39,9 @@ export const appointmentDelete = (db, data) => {
 
 export const addAppointment = async (db, msg) => {
   const mappedMsg = msgMapper(msg);
-  const dateTimeRegex = /^(\d{2}\/\d{2}\/\d{4}) (\d{2}:\d{2})$/;
+  const dateTimeRegex = /^(0[1-9]|[12][0-9]|3[01])\/(0[1-9]|1[0-2])\/\d{4} (\d{2}:\d{2})$/;
+  const DEdateTimeRegex = /^(0[1-9]|[12][0-9]|3[01])\.(0[1-9]|1[0-2])\.\d{4} (\d{2}:\d{2})$/;
+
 
   const stmt = db.prepare(
     `INSERT INTO ${process.env.tableName} VALUES (?, ?, ?)`
@@ -49,12 +51,12 @@ export const addAppointment = async (db, msg) => {
     return msg.reply("Appointment in the past. Must be in the future!");
   }
 
-  if (dateTimeRegex.test(mappedMsg.date)) {
+  if (dateTimeRegex.test(mappedMsg.date) || DEdateTimeRegex.test(mappedMsg.date) ) {
     stmt.run(msg.author.id, mappedMsg.appointment, mappedMsg.date);
     await stmt.finalize();
     msg.reply("New Appointment Created!");
     return;
   } else {
-    msg.reply("Wrong format.'DD/MM/YYYY HH:MM'");
+    msg.reply("Wrong format.'DD/MM/YYYY HH:MM' or 'DD.MM.YYYY HH:MM'");
   }
 };
