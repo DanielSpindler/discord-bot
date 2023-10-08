@@ -9,17 +9,17 @@ export const messageCreateHandler = async (msg, db) => {
   }
 
   if (
-    msg.content.startsWith("add") &&
-    !msg.content.includes("help") &&
-    msg.content.replace("add", "").trim().length > 5
+    msg.content.startsWith("!add") &&
+    !msg.content.includes("!help") &&
+    msg.content.replace("!add", "").trim().length > 5
   ) {
     addAppointment(db, msg);
   }
 
   if (
-    msg.content.startsWith("del") &&
-    !msg.content.includes("help") &&
-    msg.content.replace("del", "").trim().length > 5
+    msg.content.startsWith("!del") &&
+    !msg.content.includes("!help") &&
+    msg.content.replace("!del", "").trim().length > 5
   ) {
     appointmentDelete(db, msg);
   }
