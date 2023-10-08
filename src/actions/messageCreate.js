@@ -1,32 +1,26 @@
-import { addUser, getUsers } from "./dbActions.js";
+import { addAppointment, appointmentDelete } from "./index.js";
 
-export const messageCreateHandler = async (msg,db) => {
-    if (msg.content.startsWith("add") && msg.content.includes("help")) {
-        msg.reply("too add a ");
-      }
-    
-      if (
-        msg.content.startsWith("add") &&
-        !msg.content.includes("help") &&
-        msg.content.replace("add", "").trim().length > 5
-      ) {
-        console.log(msg.author.username);
-        console.log(msg.content.replace("add", ""));
-    
-        await addUser(db, [
-          { id: msg.author.username, name: msg.content.replace("add ", "").trim() },
-        ]);
-      }
-    
-      if (msg.content === "get") {
-        await getUsers(db)
-          .then((data) => {
-            data.forEach((item) => {
-              msg.reply(item);
-            });
-          })
-          .catch((err) => {
-            console.error(err);
-          });
-      }
+export const messageCreateHandler = async (msg, db) => {
+  if (msg.content === "help") {
+    msg.reply(`To create a new Appointment ( dont type the Brackets) \n
+    add [AppointmentName] [DD/MM/YYYY] [HH:MM] \n
+    del [AppointmentName] [DD/MM/YYYY] [HH:MM] \n
+    `);
+  }
+
+  if (
+    msg.content.startsWith("add") &&
+    !msg.content.includes("help") &&
+    msg.content.replace("add", "").trim().length > 5
+  ) {
+    addAppointment(db, msg);
+  }
+
+  if (
+    msg.content.startsWith("del") &&
+    !msg.content.includes("help") &&
+    msg.content.replace("del", "").trim().length > 5
+  ) {
+    appointmentDelete(db, msg);
+  }
 };

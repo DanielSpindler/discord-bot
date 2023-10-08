@@ -1,9 +1,7 @@
 import dotenv from "dotenv";
-import { dbInit } from "./src/dbInit.js";
-import { serverInit } from "./src/serverInit.js";
+import { dbInit,serverInit } from "./src/index.js";
 import { Client, GatewayIntentBits } from "discord.js";
-import { messageCreateHandler } from "./src/actions/messageCreate.js";
-import { readyHandler } from "./src/actions/ready.js";
+import { messageCreateHandler, readyHandler } from "./src/actions/index.js";
 
 dotenv.config();
 
@@ -19,12 +17,17 @@ serverInit();
 const db = dbInit();
 
 client.on("ready", () => {
-  readyHandler();
+  client.channels.cache.find(channel => channel.name === process.env.channelName).send(`hey @everyone im online! type help to see the commands!`)
+  
+  readyHandler(db, client);
   console.log(`Logged in as ${client.user.tag}!`);
 });
 
-client.on("messageCreate", async (msg) => {
-  messageCreateHandler(msg, db)
+client.on("messageCreate", (msg) => {
+  if (msg.channel.name !== process.env.channelName) return
+  if (msg.author.bot) return;
+
+  messageCreateHandler(msg, db);
 });
 
 client.login(process.env.TOKEN);
