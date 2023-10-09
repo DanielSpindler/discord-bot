@@ -1,5 +1,5 @@
 import dotenv from "dotenv";
-import { dbInit,serverInit } from "./src/index.js";
+import { dbInit } from "./src/index.js";
 import { Client, GatewayIntentBits } from "discord.js";
 import { messageCreateHandler, readyHandler } from "./src/actions/index.js";
 
@@ -13,18 +13,19 @@ const client = new Client({
   ],
 });
 
-serverInit();
 const db = dbInit();
+const channels = JSON.parse(process.env.channelNames);
 
 client.on("ready", () => {
-  client.channels.cache.find(channel => channel.name === process.env.channelName).send(`hey @everyone im online! type help to see the commands!`)
+  for (const oneChannel of channels){
+    client.channels.cache.find(channel => channel.name === oneChannel ).send(`${process.env.startUpMessage}`)
+  }
   
   readyHandler(db, client);
   console.log(`Logged in as ${client.user.tag}!`);
 });
 
 client.on("messageCreate", (msg) => {
-  if (msg.channel.name !== process.env.channelName) return
   if (msg.author.bot) return;
 
   messageCreateHandler(msg, db);

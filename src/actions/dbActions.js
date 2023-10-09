@@ -25,7 +25,7 @@ export const appointmentDelete = (db, data) => {
   WHERE appointment = ? AND date = ?
 `;
   try {
-    db.all(query, [appointment.appointment, appointment.date], (err) => {
+    db.all(query, [appointment.appointment, appointment.date, appointment.channel], (err) => {
       if (err) {
         console.error("Error deleting record:", err.message);
       } else {
@@ -44,7 +44,7 @@ export const addAppointment = async (db, msg) => {
 
 
   const stmt = db.prepare(
-    `INSERT INTO ${process.env.tableName} VALUES (?, ?, ?)`
+    `INSERT INTO ${process.env.tableName} VALUES (?, ?, ?, ?)`
   );
 
   if (isCurrentDateTimeClose(mappedMsg.date) < 0) {
@@ -52,7 +52,7 @@ export const addAppointment = async (db, msg) => {
   }
 
   if (dateTimeRegex.test(mappedMsg.date) || DEdateTimeRegex.test(mappedMsg.date) ) {
-    stmt.run(msg.author.id, mappedMsg.appointment, mappedMsg.date);
+    stmt.run(msg.author.id, mappedMsg.appointment, mappedMsg.date, mappedMsg.channel);
     await stmt.finalize();
     msg.reply("New Appointment Created!");
     return;

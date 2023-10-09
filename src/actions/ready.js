@@ -5,7 +5,6 @@ const appointmentData = {}; // Initialize an object to store appointment data
 const interval = parseInt(10) * 1000 + 1;
 
 export const readyHandler = (db, client) => {
-  const channelName = process.env.channelName;
   const messageToUsers = process.env.messageToUsers;
   const longTimer = parseInt(process.env.longTimer) * 1000 * 60;
   const shortTimer = parseInt(process.env.shortTimer) * 1000 * 60;
@@ -37,7 +36,7 @@ export const readyHandler = (db, client) => {
       if (shouldNotifyLong || shouldNotifyShort) {
         console.log(shouldNotifyLong ? "long timer" : "short timer");
         client.channels.cache
-          .find((channel) => channel.name === channelName)
+          .find((channel) => channel.id === appointment.channelId)
           .send(
             `${messageToUsers}${appointment.appointment}, ${appointment.date}`
           );
