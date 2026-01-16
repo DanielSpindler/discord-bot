@@ -3,7 +3,7 @@ export const msgMapper = (msgToMap) => {
     console.log(msgToMap);
     if (msgArray[4]) {
       return msgToMap.reply(
-        "Format not supported! Supported format: add SomeAppointmentNAme 09/10/2023 15:00"
+        "Format not supported! Supported format: add SomeAppointmentName 09/10/2023 15:00"
       );
     }
   
